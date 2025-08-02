@@ -17,16 +17,12 @@
     }
   ],
   "keywords": [
-<<<<<<< HEAD
-    "bedrock", "composer", "roots", "wordpress", "wp", "wp-config"
-=======
     "bedrock",
     "composer",
     "roots",
     "wordpress",
     "wp",
     "wp-config"
->>>>>>> bedrock-base
   ],
   "support": {
     "issues": "https://github.com/roots/bedrock/issues",
@@ -35,12 +31,7 @@
   "repositories": [
     {
       "type": "composer",
-<<<<<<< HEAD
-      "url": "https://wpackagist.org",
-      "only": ["wpackagist-plugin/*", "wpackagist-theme/*"]
-=======
       "url": "https://wpackagist.org"
->>>>>>> bedrock-base
     }
   ],
   "require": {
@@ -52,13 +43,9 @@
     "roots/bedrock-disallow-indexing": "^2.0",
     "roots/wordpress": "6.8.2",
     "roots/wp-config": "1.0.0",
-<<<<<<< HEAD
-    "wpackagist-theme/twentytwentyfive": "^1.0"
-=======
     "wpackagist-theme/twentytwentyfive": "^1.0",
     "wpackagist-plugin/contact-form-7": "^5.9",
     "wpackagist-plugin/safe-svg": "*"
->>>>>>> bedrock-base
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",
@@ -76,11 +63,6 @@
   "prefer-stable": true,
   "extra": {
     "installer-paths": {
-<<<<<<< HEAD
-      "web/app/mu-plugins/{$name}/": ["type:wordpress-muplugin"],
-      "web/app/plugins/{$name}/": ["type:wordpress-plugin"],
-      "web/app/themes/{$name}/": ["type:wordpress-theme"]
-=======
       "web/app/mu-plugins/{$name}/": [
         "type:wordpress-muplugin"
       ],
@@ -90,7 +72,6 @@
       "web/app/themes/{$name}/": [
         "type:wordpress-theme"
       ]
->>>>>>> bedrock-base
     },
     "wordpress-install-dir": "web/wp"
   },
