@@ -1,0 +1,92 @@
+name: bedrock-starter
+recipe: lemp
+config:
+  webroot: web
+  php: "8.3"
+  database: mysql
+  xdebug: true
+
+services:
+  database:
+    type: mysql:8.0
+  phpmyadmin:
+    type: phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
+    platform: linux/arm64
+    hosts:
+      - database
+  mailhog:
+    type: mailhog
+    image: mailhog/mailhog:latest
+    platform: linux/arm64
+    portforward: true
+    hogfrom:
+      - appserver
+  appserver:
+    overrides:
+      environment:
+        - COMPOSER_MEMORY_LIMIT=-1
+      volumes:
+        - ./nginx.conf:/opt/bitnami/nginx/conf/server_blocks/wordpress.conf:ro
+        - ./php.ini:/opt/bitnami/php/etc/conf.d/99-custom.ini:ro
+    build_as_root:
+      - apt-get update && apt-get install -y unzip curl git jq
+      - curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+      - chmod +x wp-cli.phar
+      - mv wp-cli.phar /usr/local/bin/wp
+    run_as_root:
+      - find /app -not -path "/app/.git/*" -exec chown www-data:www-data {} +
+      - ln -snf /usr/share/zoneinfo/Europe/London /etc/localtime
+      - echo "Europe/London" > /etc/timezone
+
+tooling:
+  composer:
+    service: appserver
+    cmd: composer
+
+  wp:
+    service: appserver
+    cmd: wp
+    dir: /app
+
+proxy:
+  appserver_nginx:
+    - bedrock-starter.local
+  phpmyadmin:
+    - pma.bedrock-starter.local
+
+events:
+  pre-start:
+    - "cp .env.example .env || true"
+    - |
+      cat > update_env.sh << 'EOL'
+      #!/bin/bash
+      DB_HOST=$(echo $LANDO_INFO | jq -r '.database.internal_connection.host')
+      DB_NAME=$(echo $LANDO_INFO | jq -r '.database.creds.database')
+      DB_USER=$(echo $LANDO_INFO | jq -r '.database.creds.user')
+      DB_PASSWORD=$(echo $LANDO_INFO | jq -r '.database.creds.password')
+
+      perl -i -pe "s/DB_NAME=.*/DB_NAME=$DB_NAME/" .env
+      perl -i -pe "s/DB_USER=.*/DB_USER=$DB_USER/" .env
+      perl -i -pe "s/DB_PASSWORD=.*/DB_PASSWORD=$DB_PASSWORD/" .env
+
+      if grep -q "^# DB_HOST=" .env; then
+        perl -i -pe "s/^# DB_HOST=.*/DB_HOST=$DB_HOST/" .env
+      else
+        perl -i -pe "s/DB_HOST=.*/DB_HOST=$DB_HOST/" .env
+      fi
+
+      if grep -q "^# DB_PREFIX=" .env; then
+        perl -i -pe 's/^# DB_PREFIX=.*/DB_PREFIX=wp_/' .env
+      fi
+
+      SITE_URL="https://bedrock-starter.local"
+      perl -i -pe "s|WP_HOME=.*|WP_HOME=$SITE_URL|" .env
+      perl -i -pe "s|WP_SITEURL=.*|WP_SITEURL=$SITE_URL/wp|" .env
+      EOL
+    - "chmod +x update_env.sh && ./update_env.sh && rm update_env.sh"
+
+  post-start:
+    - "./scripts/merge-plugins.sh"
+    - "composer install"
+    - "wp core install --url=https://bedrock-starter.local --title='Bedrock Site' --admin_user=admin --admin_password=admin --admin_email=admin@bedrock.local"
