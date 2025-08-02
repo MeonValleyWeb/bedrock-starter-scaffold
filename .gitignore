@@ -28,8 +28,11 @@ auth.json
 
 # WP-CLI
 wp-cli.local.yml
+<<<<<<< HEAD
 
 /composer.lock
 
 # Lando
 .lando.local.yml
+=======
+>>>>>>> bedrock-base

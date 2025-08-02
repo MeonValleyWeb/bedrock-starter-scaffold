@@ -165,5 +165,10 @@ if (!defined('ABSPATH')) {
     define('ABSPATH', $webroot_dir . '/wp/');
 }
 if (file_exists(__DIR__ . '/../overrides/application-hooks.php')) {
+<<<<<<< HEAD
   require_once __DIR__ . '/../overrides/application-hooks.php';
 }
+=======
+    require_once __DIR__ . '/../overrides/application-hooks.php';
+  }
+>>>>>>> bedrock-base
