@@ -7,8 +7,6 @@ web/app/upgrade
 web/app/uploads/*
 !web/app/uploads/.gitkeep
 web/app/cache/*
-scripts/
-overrides/
 
 # WordPress
 web/wp
@@ -28,5 +26,3 @@ auth.json
 
 # WP-CLI
 wp-cli.local.yml
-
-.devcontainer/

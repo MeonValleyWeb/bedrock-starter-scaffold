@@ -1,0 +1,12 @@
+{
+  "require": {
+    "wpackagist-plugin/contact-form-7": "^5.9",
+    "wpackagist-plugin/safe-svg": "*"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    }
+  ]
+}
