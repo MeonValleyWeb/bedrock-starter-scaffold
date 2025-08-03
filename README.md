@@ -1,61 +1,161 @@
-<p align="center">
-  <a href="https://roots.io/bedrock/">
-    <img alt="Bedrock" src="https://cdn.roots.io/app/uploads/logo-bedrock.svg" height="100">
-  </a>
-</p>
+# Bedrock Starter Scaffold
 
-<p align="center">
-  <a href="https://packagist.org/packages/roots/bedrock">
-    <img alt="Packagist Installs" src="https://img.shields.io/packagist/dt/roots/bedrock?label=projects%20created&colorB=2b3072&colorA=525ddc&style=flat-square">
-  </a>
+A modern WordPress starter built on [Bedrock](https://roots.io/bedrock/) with Lando, Composer plugin overrides, and custom environment configuration.
 
-  <a href="https://packagist.org/packages/roots/wordpress">
-    <img alt="roots/wordpress Packagist Downloads" src="https://img.shields.io/packagist/dt/roots/wordpress?label=roots%2Fwordpress%20downloads&logo=roots&logoColor=white&colorB=2b3072&colorA=525ddc&style=flat-square">
-  </a>
+> Maintained by [Andrew Wilkinson](https://meonvalleyweb.com) – Meon Valley Web  
+> Contact: [andrew@meonvalleyweb.com](mailto:andrew@meonvalleyweb.com)
 
-  <img src="https://img.shields.io/badge/dynamic/json.svg?url=https://raw.githubusercontent.com/roots/bedrock/master/composer.json&label=wordpress&logo=roots&logoColor=white&query=$.require[%22roots/wordpress%22]&colorB=2b3072&colorA=525ddc&style=flat-square">
+---
 
-  <a href="https://github.com/roots/bedrock/actions/workflows/ci.yml">
-    <img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/roots/bedrock/ci.yml?branch=master&logo=github&label=CI&style=flat-square">
-  </a>
+## 🚀 Features
 
-  <a href="https://twitter.com/rootswp">
-    <img alt="Follow Roots" src="https://img.shields.io/badge/follow%20@rootswp-1da1f2?logo=twitter&logoColor=ffffff&message=&style=flat-square">
-  </a>
-</p>
+- Roots Bedrock as a base (tracked via Git upstream)
+- Lando environment for local development
+- Composer-based plugin injection via `overrides/composer.plugins.json`
+- Custom Bedrock config overrides via `application-hooks.php`
+- Ready-to-use `.devcontainer/` for VS Code Dev Containers
+- Simple update process to keep in sync with Roots
 
-<p align="center">WordPress boilerplate with Composer, easier configuration, and an improved folder structure</p>
+---
 
-<p align="center">
-  <a href="https://roots.io/bedrock/">Website</a> &nbsp;&nbsp; <a href="https://roots.io/bedrock/docs/installation/">Documentation</a> &nbsp;&nbsp; <a href="https://github.com/roots/bedrock/releases">Releases</a> &nbsp;&nbsp; <a href="https://discourse.roots.io/">Community</a>
-</p>
+## 📁 Folder Structure
 
-## Sponsors
+```
+/
+├── config/                      # Bedrock config
+├── overrides/                  # Custom plugin and config definitions
+│   ├── composer.plugins.json
+│   └── application-hooks.php
+├── scripts/
+│   └── merge-plugins.sh        # Merges plugin overrides into composer.json
+├── .devcontainer/              # Optional VS Code dev environment
+├── .lando.yml                  # Lando setup (PHP 8.3, MySQL, Mailhog, etc.)
+├── composer.json
+└── .gitignore
+```
 
-Bedrock is an open source project and completely free to use. If you've benefited from our projects and would like to support our future endeavors, please consider [sponsoring Roots](https://github.com/sponsors/roots).
+---
 
-<div align="center">
-<a href="https://carrot.com/"><img src="https://cdn.roots.io/app/uploads/carrot.svg" alt="Carrot" width="120" height="90"></a> <a href="https://wordpress.com/"><img src="https://cdn.roots.io/app/uploads/wordpress.svg" alt="WordPress.com" width="120" height="90"></a> <a href="https://worksitesafety.ca/careers/"><img src="https://cdn.roots.io/app/uploads/worksite-safety.svg" alt="Worksite Safety" width="120" height="90"></a> <a href="https://www.itineris.co.uk/"><img src="https://cdn.roots.io/app/uploads/itineris.svg" alt="Itineris" width="120" height="90"></a> <a href="https://bonsai.so/"><img src="https://cdn.roots.io/app/uploads/bonsai.svg" alt="Bonsai" width="120" height="90"></a>
-</div>
+## 🧪 Requirements
 
-## Overview
+- [Lando](https://lando.dev)
+- [Docker](https://www.docker.com/)
+- [Composer](https://getcomposer.org/)
+- Git (for clone and update)
 
-Bedrock is a WordPress boilerplate for developers that want to manage their projects with Git and Composer. Much of the philosophy behind Bedrock is inspired by the [Twelve-Factor App](http://12factor.net/) methodology, including the [WordPress specific version](https://roots.io/twelve-factor-wordpress/).
+---
 
-- Better folder structure
-- Dependency management with [Composer](https://getcomposer.org)
-- Easy WordPress configuration with environment specific files
-- Environment variables with [Dotenv](https://github.com/vlucas/phpdotenv)
-- Autoloader for mu-plugins (use regular plugins as mu-plugins)
+## 🧱 Getting Started
 
-## Getting Started
+### 1. Clone this repo
 
-See the [Bedrock installation documentation](https://roots.io/bedrock/docs/installation/).
+```bash
+git clone https://github.com/MeonValleyWeb/bedrock-starter-scaffold.git my-site
+cd my-site
+```
 
-## Stay Connected
+### 2. Update `.lando.yml`
 
-- Join us on Discord by [sponsoring us on GitHub](https://github.com/sponsors/roots)
-- Participate on [Roots Discourse](https://discourse.roots.io/)
-- Follow [@rootswp on Twitter](https://twitter.com/rootswp)
-- Read the [Roots Blog](https://roots.io/blog/)
-- Subscribe to the [Roots Newsletter](https://roots.io/newsletter/)
+Edit the following:
+
+- Change `name: bedrock-starter` → `name: your-site-name`
+- Update `proxy:` domains accordingly (e.g., `your-site.local`)
+
+### 3. Start Lando
+
+```bash
+lando start
+```
+
+### 4. Merge custom plugins and install dependencies
+
+```bash
+./scripts/merge-plugins.sh
+composer update
+```
+
+### 5. Open your site
+
+Visit:
+
+```
+https://your-site.local
+```
+
+---
+
+## ⚙️ Updating Bedrock from Roots
+
+1. Add upstream (first time only):
+
+```bash
+git remote add upstream https://github.com/roots/bedrock.git
+```
+
+2. Pull and merge latest updates:
+
+```bash
+git fetch upstream
+git merge upstream/master
+```
+
+3. Re-apply plugin overrides and update:
+
+```bash
+./scripts/merge-plugins.sh
+composer update
+```
+
+4. Commit and push:
+
+```bash
+git add .
+git commit -m "Update: merged latest Bedrock changes"
+git push origin main
+```
+
+---
+
+## 💻 Dev Container (Optional)
+
+If you use **VS Code Dev Containers**:
+
+1. Open project in VS Code
+2. Click **"Reopen in Container"**
+3. Pre-installed tools:
+   - Composer
+   - WP-CLI
+   - PHP extensions for Bedrock
+
+> GitHub Actions for `.devcontainer/` are disabled by default.  
+> You can re-enable with custom CI setup if needed.
+
+---
+
+## 🧯 Troubleshooting
+
+- **Fatal error: `Config not found`**  
+  Make sure `application-hooks.php` checks `class_exists(Config::class)` before using it.
+
+- **`env()` not defined**  
+  Use `getenv()` instead of `env()` inside hooks.
+
+- **Composer warnings**  
+  Run `composer update` after plugin merges.
+
+- **Merge errors from upstream**  
+  Use `--allow-unrelated-histories` when merging Bedrock for the first time.
+
+---
+
+## 🧑‍💻 Maintainer
+
+**Andrew Wilkinson**  
+[Meon Valley Web](https://meonvalleyweb.com)  
+📧 [andrew@meonvalleyweb.com](mailto:andrew@meonvalleyweb.com)
+
+---
+
+## 📄 License
+
+MIT – based on the [Roots Bedrock](https://github.com/roots/bedrock) project.
